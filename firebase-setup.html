@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Firebase Setup – Balaji Wooden Solutions</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',sans-serif;background:#f0f2f5;color:#1e1208;min-height:100vh;padding:40px 20px}
+    .wrap{max-width:760px;margin:0 auto}
+    .header{text-align:center;margin-bottom:40px}
+    .header .icon{width:72px;height:72px;background:#c8902a;border-radius:18px;
+      display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 16px}
+    .header h1{font-size:2rem;color:#3b1f0a;font-weight:800;margin-bottom:8px}
+    .header p{color:#757575;font-size:1rem}
+    .card{background:#fff;border-radius:16px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.08);margin-bottom:24px}
+    .step{display:flex;gap:18px;margin-bottom:28px}
+    .step:last-child{margin-bottom:0}
+    .step-num{width:38px;height:38px;background:#c8902a;color:#fff;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;flex-shrink:0}
+    .step-body h3{font-size:1rem;color:#3b1f0a;font-weight:700;margin-bottom:6px}
+    .step-body p{font-size:.9rem;color:#555;line-height:1.7;margin-bottom:8px}
+    .step-body a{color:#c8902a;font-weight:600}
+    code{background:#f5f5f5;padding:2px 7px;border-radius:4px;font-size:.85rem;color:#3b1f0a}
+    .code-block{background:#1e1208;color:#fdf6ec;padding:20px 22px;border-radius:12px;
+      font-family:monospace;font-size:.85rem;line-height:1.8;margin:12px 0;overflow-x:auto;
+      position:relative}
+    .code-block .comment{color:#888}
+    .code-block .key{color:#c8902a}
+    .code-block .val{color:#81c784}
+    .copy-btn{position:absolute;top:10px;right:12px;background:rgba(255,255,255,.15);
+      color:#fff;border:none;padding:5px 12px;border-radius:6px;font-size:.75rem;
+      cursor:pointer;transition:.18s}
+    .copy-btn:hover{background:rgba(255,255,255,.3)}
+    .tip{background:#fff8e1;border:1px solid #ffe082;border-radius:10px;
+      padding:14px 18px;display:flex;gap:12px;align-items:flex-start;margin:14px 0}
+    .tip .ti{font-size:1.2rem;flex-shrink:0}
+    .tip p{font-size:.86rem;color:#5d4037;line-height:1.6}
+    .done-card{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;
+      border-radius:16px;padding:32px;text-align:center;margin-bottom:24px}
+    .done-card h2{font-size:1.4rem;font-weight:800;margin-bottom:8px}
+    .done-card p{opacity:.85;margin-bottom:20px}
+    .btn{display:inline-block;padding:13px 28px;border-radius:50px;font-size:.95rem;
+      font-weight:700;text-decoration:none;transition:.18s;cursor:pointer;border:none}
+    .btn-gold{background:#c8902a;color:#fff}.btn-gold:hover{background:#6b3a1f}
+    .btn-white{background:#fff;color:#2e7d32}.btn-white:hover{background:#e8f5e9}
+    .progress{display:flex;gap:0;margin-bottom:32px}
+    .prog-step{flex:1;text-align:center;position:relative}
+    .prog-step::before{content:'';position:absolute;top:16px;left:50%;right:-50%;
+      height:2px;background:#e0e0e0;z-index:0}
+    .prog-step:last-child::before{display:none}
+    .prog-dot{width:32px;height:32px;border-radius:50%;background:#e0e0e0;color:#757575;
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;
+      margin:0 auto 6px;position:relative;z-index:1}
+    .prog-dot.done{background:#c8902a;color:#fff}
+    .prog-label{font-size:.72rem;color:#757575;font-weight:600}
+    img.ss{width:100%;border-radius:10px;border:1px solid #e0e0e0;margin:10px 0}
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="icon">🔥</div>
+    <h1>Deploy with Firebase</h1>
+    <p>Use the configured Firebase project, protected database rules, and Firebase Hosting</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress">
+    <div class="prog-step"><div class="prog-dot done">1</div><div class="prog-label">Firebase Project</div></div>
+    <div class="prog-step"><div class="prog-dot done">2</div><div class="prog-label">Admin Sign-in</div></div>
+    <div class="prog-step"><div class="prog-dot done">3</div><div class="prog-label">Secure Database</div></div>
+    <div class="prog-step"><div class="prog-dot done">4</div><div class="prog-label">Hosting Setup</div></div>
+    <div class="prog-step"><div class="prog-dot done">5</div><div class="prog-label">Deploy</div></div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Open the configured Firebase project</h3>
+        <p>Sign in at <a href="https://console.firebase.google.com" target="_blank" rel="noopener noreferrer">console.firebase.google.com</a> and open project <code>balaji-shop-1cd6f</code>.</p>
+        <p>This website is already configured for that project. Do not create a second project or replace the existing web app config.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Create the admin sign-in</h3>
+        <p>In Firebase Console, open <b>Authentication → Sign-in method</b> and enable <b>Email/Password</b> and <b>Phone</b>. Create the owner's admin user yourself; this website has no public sign-up. Set the SMS region policy for the countries you serve.</p>
+        <p>In Firestore, create <code>admins/{UID}</code>, replacing <code>{UID}</code> with that user's Authentication UID. Set the field <code>role</code> to the string <code>admin</code>.</p>
+        <p>The admin portal checks this role on every sign-in. Do not share the Firebase console account or add role documents for customers.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Confirm the database rules</h3>
+        <p>The repository includes <code>firestore.rules</code>. Customers can submit valid bookings and design requests, but only an authenticated admin can read or manage them.</p>
+        <p>Create Firestore in production mode if needed. Enable Firebase Storage for gallery images. Deploy both checked-in rulesets before accepting live bookings. Never use open test-mode rules for a public website.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Configure Hosting and authorized domains</h3>
+        <p>Firebase Hosting is configured in <code>firebase.json</code>. Add the deployed website domain under <b>Authentication → Settings → Authorized domains</b>.</p>
+        <div class="tip">
+          <div class="ti">⚠️</div>
+          <p>Do not deploy until the admin user and <code>admins/{UID}</code> role document are created. Firestore rules intentionally deny admin reads until then.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h3>Deploy the website and rules</h3>
+        <p>Install Firebase CLI, sign in, then run <code>firebase deploy --only firestore:rules,storage,hosting</code> from the website folder.</p>
+        <p>See <a href="DEPLOYMENT.md">DEPLOYMENT.md</a> for the complete checklist, including App Check and post-deployment verification.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="done-card">
+    <h2>✅ After Setup — What Happens</h2>
+      <p>Bookings and design requests are stored in Firestore.<br>
+    Sign in to <b>admin.html</b> with the provisioned admin account to manage requests from any device.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+      <a href="admin.html" class="btn btn-white">🔐 Open Admin Portal</a>
+      <a href="booking.html" class="btn btn-gold">📅 Test Booking Form</a>
+      <a href="https://console.firebase.google.com" target="_blank" class="btn btn-gold">🔥 Firebase Console</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="color:#3b1f0a;margin-bottom:16px">❓ Frequently Asked Questions</h3>
+    <details style="margin-bottom:12px;cursor:pointer">
+      <summary style="font-weight:600;color:#3b1f0a;font-size:.92rem">Is Firebase free?</summary>
+      <p style="margin-top:8px;font-size:.88rem;color:#555;line-height:1.7">Yes! Firebase's free tier (Spark plan) allows 50,000 document reads and 20,000 writes per day — more than enough for a booking website.</p>
+    </details>
+    <details style="margin-bottom:12px;cursor:pointer">
+      <summary style="font-weight:600;color:#3b1f0a;font-size:.92rem">What if I haven't set up Firebase yet?</summary>
+      <p style="margin-top:8px;font-size:.88rem;color:#555;line-height:1.7">The website still works! Bookings save locally (in the browser). Once you set up Firebase, all new bookings go online automatically.</p>
+    </details>
+    <details style="margin-bottom:12px;cursor:pointer">
+      <summary style="font-weight:600;color:#3b1f0a;font-size:.92rem">Can I access bookings from my phone?</summary>
+      <p style="margin-top:8px;font-size:.88rem;color:#555;line-height:1.7">Deploy with Firebase Hosting using the repository's Firebase CLI configuration, then sign in to the admin portal from any device.</p>
+    </details>
+    <details style="cursor:pointer">
+      <summary style="font-weight:600;color:#3b1f0a;font-size:.92rem">How do I get notified of new bookings?</summary>
+      <p style="margin-top:8px;font-size:.88rem;color:#555;line-height:1.7">Currently via WhatsApp (customers send booking via WhatsApp button). For email notifications, you can add Firebase Cloud Functions later — ask Kiro to set that up.</p>
+    </details>
+  </div>
+
+  <p style="text-align:center;font-size:.82rem;color:#aaa;margin-bottom:40px">
+    Balaji Wooden Solutions — Admin Setup Guide &nbsp;|&nbsp; Made by MR. VIJAY KUMAR
+  </p>
+
+</div>
+</body>
+</html>

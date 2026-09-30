@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function validBooking() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          'name', 'phone', 'email', 'service', 'date', 'time', 'dateFormatted',
+          'address', 'notes', 'localId', 'status', 'createdAt', 'source'
+        ])
+        && data.keys().hasAll([
+            'name', 'phone', 'email', 'service', 'date', 'time',
+          'address', 'notes', 'localId', 'status', 'createdAt', 'source'
+        ])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 120
+        && data.phone is string && data.phone.matches('^[0-9 +\\-]{7,15}$')
+        && data.email is string && data.email.size() <= 254
+        && data['service'] in [
+          'Custom Furniture', 'Doors & Windows', 'Interior Woodwork', 'Office Furniture',
+          'Repair & Restoration', 'Custom Design Consultation', 'Home Visit & Measurement',
+          'Other / General Enquiry'
+        ]
+        && data.date is string && data.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && data['time'] in ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '6:00 PM', '7:00 PM']
+          && (!data.keys().hasAny(['dateFormatted'])
+            || (data.dateFormatted is string && data.dateFormatted.size() <= 100))
+        && data.address is string && data.address.size() <= 1000
+        && data.notes is string && data.notes.size() <= 2000
+        && data.localId is string && data.localId.size() <= 100
+        && data.status == 'pending'
+        && data.createdAt == request.time
+        && data.source == 'website';
+    }
+
+    function validDesignRequest() {
+      let data = request.resource.data;
+      return data.keys().hasOnly([
+          'name', 'phone', 'email', 'item', 'wood', 'budget', 'timeline',
+           'description', 'notes', 'localId', 'status', 'createdAt', 'source'
+        ])
+        && data.keys().hasAll([
+          'name', 'phone', 'email', 'item', 'wood', 'budget', 'timeline',
+          'description', 'localId', 'status', 'createdAt', 'source'
+        ])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 120
+        && data.phone is string && data.phone.matches('^[0-9 +\\-]{7,15}$')
+        && data.email is string && data.email.size() <= 254
+        && data.item is string && data.item.size() > 0 && data.item.size() <= 160
+        && data.wood is string && data.wood.size() > 0 && data.wood.size() <= 100
+        && data.budget is string && data.budget.size() <= 40
+        && data.timeline is string && data.timeline.size() <= 100
+        && data.description is string && data.description.size() > 0 && data.description.size() <= 3000
+        && data.localId is string && data.localId.size() <= 100
+        && data.status == 'new'
+        && data.createdAt == request.time
+        && data.source == 'website'
+        && (!data.keys().hasAny(['notes'])
+          || (data.notes is string && data.notes.size() <= 2000));
+    }
+
+    match /bookings/{bookingId} {
+      allow create: if validBooking();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /design_requests/{requestId} {
+      allow create: if validDesignRequest();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /gallery_items/{photoId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /admins/{userId} {
+      allow get: if request.auth != null && request.auth.uid == userId;
+      allow list, create, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
